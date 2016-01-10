@@ -1,13 +1,11 @@
 #!/usr/bin/env sh
 #
 # Docker plugin
-# by Manoj Mahalingam (@manojlds)
+# by Rob Sonke
 # ⚓
 # Displays the status of docker machines and running containers
 
 export PATH="/usr/local/bin:/usr/bin:$PATH"
-echo "Docker | dropdown=false"
-echo "---"
 
 DOCKER_MACHINES="$(docker-machine ls -q)"
 if [ -z "$DOCKER_MACHINES" ]; then
@@ -18,12 +16,12 @@ fi
 echo "${DOCKER_MACHINES}" | while read -r machine; do
   STATUS=$(docker-machine status "$machine")
   if [ "$STATUS" = "Running" ]; then
-    echo "$machine | color=green bash=$(which docker-machine) param1=stop param2=$machine terminal=false refresh=true"
+    #echo "Docker: $machine | bash=$(which docker-machine) param1=stop param2=$machine terminal=false refresh=true"
     ENV=$(docker-machine env --shell sh "$machine")
     eval "$ENV"
     CONTAINERS="$(docker ps --format "{{.Names}} ({{.Image}})|{{.ID}}")"
     if [ -z "$CONTAINERS" ]; then
-      echo "No running containers"
+      echo "Docker: no running containers"
     else
       LAST_CONTAINER=$(echo "$CONTAINERS" | tail -n1 )
       echo "${CONTAINERS}" | while read -r CONTAINER; do
@@ -35,7 +33,7 @@ echo "${DOCKER_MACHINES}" | while read -r machine; do
       done
     fi
   else
-    echo "$machine (not running) | color=red bash=$(which docker-machine) param1=start param2=$machine terminal=false refresh=true"
+    echo "$machine (not running) | bash=$(which docker-machine) param1=start param2=$machine terminal=false refresh=true"
   fi
   echo "---"
 done
