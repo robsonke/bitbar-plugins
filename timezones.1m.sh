@@ -25,8 +25,8 @@ getTime() {
   fi
 }
 
-getTime "Goes:" "Europe/Amsterdam" 1
-echo "---"
 getTime "Pune:" "Asia/Kolkata" 1
+echo "---"
+getTime "Goes:" "Europe/Amsterdam" 1
 echo "---"
 getTime "DC:" "America/New_York" 1
