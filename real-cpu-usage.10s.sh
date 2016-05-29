@@ -4,12 +4,10 @@
 # BitBar plugin
 #
 # by Mat Ryer and Tyler Bunnell
-#
+# but heavily modified by myself to fit my needs.
 # Calcualtes and displays real CPU usage stats.
 
-IDLE=`ps aux | awk {'sum+=$3;print sum'} | tail -n 1`
+ps -A -o %cpu | awk '{s+=$1} END {print "cpu:" s "%"}'
 
-USED=`echo 100 - $IDLE | bc`
-
-echo -n "cpu: "
-echo $USED%
+echo "---"
+ps aux | sort -nrk 3,3 | head -n 5
