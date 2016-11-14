@@ -6,29 +6,28 @@
 #
 
 
-API_KEY="fill in your status cake api key"
-USERNAME="fill in your status cake user name"
+API_KEY="yourapikey"
+USERNAME="yourusername"
 
 # get down tests
-TESTS=$(curl --silent -H "API: ${API_KEY}" -H "Username: ${USERNAME}" -X GET https://app.statuscake.com/API/Tests/?Status=UP)
+TESTS=$(curl --silent -H "API: ${API_KEY}" -H "Username: ${USERNAME}" -X GET https://app.statuscake.com/API/Tests/?Status=DOWN)
 
 
 if [ "$TESTS" == "[]" ]; then
   NROFDOWN=0
 else
-  TESTIDS=$(echo $TESTS | jq '.[] | .TestID')
+  TESTIDS=$(echo $TESTS | /usr/local/bin/jq '.[] | .TestID')
   NROFDOWN=$(echo "$TESTIDS" | wc -l | xargs)
 fi
-
 
 if (( $NROFDOWN > 0 )); then
   echo "sc: ${NROFDOWN}⇩|color=#f23400 dropdown=false"
   echo "---";
-  echo $TESTIDS | while read line
+  echo "$TESTIDS" | while read line
   do
     # get details of specific test
     DETAILS=$(curl --silent -H "API: ${API_KEY}" -H "Username: ${USERNAME}" -X GET https://app.statuscake.com/API/Tests/Details/?TestID=$line)
-    echo $DETAILS | jq '.WebsiteName'
+    echo $DETAILS | /usr/local/bin/jq '.WebsiteName'
   done
 else
   echo "sc: 0⇩|dropdown=false"
