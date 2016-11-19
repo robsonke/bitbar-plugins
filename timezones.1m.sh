@@ -12,6 +12,8 @@
 #
 
 export PATH=${PATH}:/usr/local/bin
+export NVM_DIR="$HOME/.nvm"
+source $(brew --prefix nvm)/nvm.sh
 
 getTime() {
   TZ="$2"
