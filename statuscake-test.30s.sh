@@ -16,8 +16,10 @@ TESTS=$(curl --silent -H "API: ${API_KEY}" -H "Username: ${USERNAME}" -X GET htt
 if [ "$TESTS" == "[]" ]; then
   NROFDOWN=0
 else
-  TESTIDS=$(echo $TESTS | /usr/local/bin/jq '.[] | .TestID')
-  NROFDOWN=$(echo "$TESTIDS" | wc -l | xargs)
+  # get all test id's, filtered by paused = false as the api can't do that
+  TESTIDS=$(echo $TESTS | /usr/local/bin/jq '.[] | select(.Paused == false) | .TestID')
+  # count the number of tests, skip empty lines
+  NROFDOWN=$(echo "$TESTIDS" | sed '/^\s*$/d' | wc -l | xargs)
 fi
 
 if (( $NROFDOWN > 0 )); then
@@ -34,10 +36,3 @@ else
   echo "---";
   echo "All up!";
 fi
-
-
-
-
-
-
-
