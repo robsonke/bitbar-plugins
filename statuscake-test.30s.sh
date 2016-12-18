@@ -29,7 +29,9 @@ if (( $NROFDOWN > 0 )); then
   do
     # get details of specific test
     DETAILS=$(curl --silent -H "API: ${API_KEY}" -H "Username: ${USERNAME}" -X GET https://app.statuscake.com/API/Tests/Details/?TestID=$line)
-    echo $DETAILS | /usr/local/bin/jq '.WebsiteName'
+    NAME=$(echo $DETAILS | /usr/local/bin/jq '.WebsiteName')
+    URL=$(echo $DETAILS | /usr/local/bin/jq '.WebsiteHost')
+    echo "$NAME | color=red href=$URL"
   done
 else
   echo "sc: 0⇩|dropdown=false"
