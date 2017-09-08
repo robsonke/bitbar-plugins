@@ -11,11 +11,6 @@
 # npm install moment-timezone
 #
 
-export PATH=${PATH}:/usr/local/bin
-# Nodejs version manager
-export NVM_DIR="$HOME/.nvm"
-source $(brew --prefix nvm)/nvm.sh
-
 getTime() {
   TZ="$2"
   MOMT="`dirname $0`/node_modules/moment-timezone"
