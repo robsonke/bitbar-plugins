@@ -6,8 +6,8 @@
 #
 
 
-API_KEY="YpAaEOaeRdy4IgO5WxkP"
-USERNAME="robsonke"
+API_KEY="yourapikey"
+USERNAME="yourusername"
 
 # get down tests
 TESTS=$(curl --silent -H "API: ${API_KEY}" -H "Username: ${USERNAME}" -X GET https://app.statuscake.com/API/Tests/?Status=DOWN)
