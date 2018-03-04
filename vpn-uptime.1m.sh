@@ -43,8 +43,7 @@ if [[ `ifconfig | grep $iface` ]]; then
 	converttime() {
 	 ((h=${1}/3600))
 	 ((m=(${1}%3600)/60))
-	 ((s=${1}%60))
-	 printf "%02d:%02d:%02d\n" $h $m $s
+	 printf "%02d:%02d\n" $h $m
 	}
 	age=`echo $(($(date +%s) - $(stat -t %s -f %m -- "/var/run/$iface.pid")))`
 

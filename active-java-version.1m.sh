@@ -11,8 +11,8 @@ VERSION=$(java -version 2>&1 | awk -F '"' '/version/ {print $2}')
 if [ -z "$VERSION" ]; then
   VERSION=$($JAVA_HOME/bin/java -version 2>&1 | awk -F '"' '/version/ {print $2}')
 fi
-   
-echo -n "jdk: "
+
+echo -n "♨︎: "
 echo $VERSION
 
 
