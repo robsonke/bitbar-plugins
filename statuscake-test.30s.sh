@@ -23,18 +23,18 @@ else
 fi
 
 if (( $NROFDOWN > 0 )); then
+  NAMES=$(echo $TESTS | /usr/local/bin/jq '.[] | select(.Paused == false) | .WebsiteName')
+  URLS=$(echo $TESTS | /usr/local/bin/jq '.[] | select(.Paused == false) | .WebsiteURL')
   echo "☝ ${NROFDOWN}⇩|color=#f23400 dropdown=false"
   echo "---";
-  echo "$TESTIDS" | while read line
+  echo "$TESTIDS" | while ((i++)); read line
   do
-    # get details of specific test
-    DETAILS=$(curl --silent -H "API: ${API_KEY}" -H "Username: ${USERNAME}" -X GET https://app.statuscake.com/API/Tests/Details/?TestID=$line)
-    NAME=$(echo $DETAILS | /usr/local/bin/jq '.WebsiteName')
-    URL=$(echo $DETAILS | /usr/local/bin/jq '.WebsiteHost')
-    echo "$NAME | color=red href=$URL"
+    NAME=$(sed -n ${i}p <<< "$NAMES" | sed "s/\"//g")
+    URL=$(sed -n ${i}p <<< "$URLS" | sed "s/\"//g")
+    echo "$NAME ($URL) | color=red href=$URL"
   done
 else
-  echo "☝ 0⇩ |dropdown=false"
+  echo "sc: 0⇩|dropdown=false"
   echo "---";
   echo "All up!";
 fi
