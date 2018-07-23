@@ -34,7 +34,7 @@ if (( $NROFDOWN > 0 )); then
     echo "$NAME ($URL) | color=red href=$URL"
   done
 else
-  echo "sc: 0⇩|dropdown=false"
+  echo "☝ 0⇩ |dropdown=false"
   echo "---";
   echo "All up!";
 fi
