@@ -10,12 +10,15 @@
 # npm install moment
 # npm install moment-timezone
 #
+#
+
+
 
 getTime() {
   TZ="$2"
   MOMT="`dirname $0`/node_modules/moment-timezone"
 
-  RES=`echo "var m=require('${MOMT}'); console.log(m().tz('$2').format('h:mm A'))" | node`
+  RES=`echo "var m=require('${MOMT}'); console.log(m().tz('$2').format('h:mm A'))" | /usr/local/bin/node`
   if [ ! -z "$3" ]; then
     echo "$1" "$RES" "| font='Inconsolata LGC'"
   else

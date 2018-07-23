@@ -6,8 +6,8 @@
 #
 
 
-API_KEY="yourapikey"
-USERNAME="yourusername"
+API_KEY="YpAaEOaeRdy4IgO5WxkP"
+USERNAME="robsonke"
 
 # get down tests
 TESTS=$(curl --silent -H "API: ${API_KEY}" -H "Username: ${USERNAME}" -X GET https://app.statuscake.com/API/Tests/?Status=DOWN)
@@ -23,7 +23,7 @@ else
 fi
 
 if (( $NROFDOWN > 0 )); then
-  echo "sc: ${NROFDOWN}⇩|color=#f23400 dropdown=false"
+  echo "☝ ${NROFDOWN}⇩|color=#f23400 dropdown=false"
   echo "---";
   echo "$TESTIDS" | while read line
   do
@@ -34,7 +34,7 @@ if (( $NROFDOWN > 0 )); then
     echo "$NAME | color=red href=$URL"
   done
 else
-  echo "sc: 0⇩|dropdown=false"
+  echo "☝ 0⇩ |dropdown=false"
   echo "---";
   echo "All up!";
 fi

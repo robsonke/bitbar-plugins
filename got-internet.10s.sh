@@ -10,12 +10,12 @@ ping_timeout=1 #integers only, ping's fault
 ping_address=8.8.8.8
 
 if ! ping -c 1 -t $ping_timeout -q $ping_address > /dev/null 2>&1; then
-	echo "www:⇩|color=#f23400 dropdown=false"
+	echo "⚡︎:⇩|color=#f23400 dropdown=false"
 	echo "---"
 	echo "You're offline"
 	# echo "Ping to Google DNS failed"
 else
-	echo "www:⇧| dropdown=false"
+	echo "⚡︎ ⇧| dropdown=false"
 	echo "---"
 	echo "You're online"
 fi
