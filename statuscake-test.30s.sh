@@ -25,7 +25,7 @@ fi
 if (( $NROFDOWN > 0 )); then
   NAMES=$(echo $TESTS | /usr/local/bin/jq '.[] | select(.Paused == false) | .WebsiteName')
   URLS=$(echo $TESTS | /usr/local/bin/jq '.[] | select(.Paused == false) | .WebsiteURL')
-  echo "☝ ${NROFDOWN}⇩|color=#f23400 dropdown=false"
+  echo "🍰 ${NROFDOWN}⇩|color=#f23400 dropdown=false"
   echo "---";
   echo "$TESTIDS" | while ((i++)); read line
   do
@@ -33,8 +33,6 @@ if (( $NROFDOWN > 0 )); then
     URL=$(sed -n ${i}p <<< "$URLS" | sed "s/\"//g")
     echo "$NAME ($URL) | color=red href=$URL"
   done
-else
-  echo "☝ 0⇩ |dropdown=false"
-  echo "---";
-  echo "All up!";
+  echo ---
+  echo "Go to StatusCake | href=https://app.statuscake.com/YourStatus.php"
 fi
