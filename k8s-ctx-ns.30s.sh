@@ -5,19 +5,18 @@ K8S_LOGO="iVBORw0KGgoAAAANSUhEUgAAALoAAAC3CAYAAAClkEQvAAAAGXRFWHRTb2Z0d2FyZQBBZG
 CURRENT_NS=$(kubectl config view --minify --output 'jsonpath={..namespace}')
 CURRENT_CTX=$(kubectl config current-context)
 
-NAMESPACES=$(kubectl get namespaces -o=jsonpath='{range .items[*].metadata.name}{@}{"\n"}{end}')
-CONTEXTS=$(kubectl config get-contexts -o=name | sort -n)
+#NAMESPACES=$(kubectl get namespaces -o=jsonpath='{range .items[*].metadata.name}{@}{"\n"}{end}')
+#CONTEXTS=$(kubectl config get-contexts -o=name | sort -n)
 
 echo "⎈ $CURRENT_CTX - $CURRENT_NS | dropdown=false"
-echo "---"
-echo Namespaces for $CURRENT_CTX
-echo "${NAMESPACES}" | while read -r namespace; do
-  echo "$namespace | bash=$(which kubectl) param1=config param2=set-context param3="$CURRENT_CTX" param4=--namespace="${namespace}" terminal=false refresh=true color=green"
-done
-echo "---"
-echo Contexts
-echo "${CONTEXTS}" | while read -r context; do
-  echo "$context | bash=$(which kubectl) param1=config param2=set-context param3="$context" terminal=false refresh=true color=red"
-done
+# echo Namespaces for $CURRENT_CTX
+# echo "${NAMESPACES}" | while read -r namespace; do
+#   echo "$namespace | bash=$(which kubectl) param1=config param2=set-context param3="$CURRENT_CTX" param4=--namespace="${namespace}" terminal=false refresh=true color=green"
+# done
+# echo "---"
+# echo Contexts
+# echo "${CONTEXTS}" | while read -r context; do
+#   echo "$context | bash=$(which kubectl) param1=config param2=set-context param3="$context" terminal=false refresh=true color=red"
+# done
 
 

@@ -34,5 +34,6 @@ if (( $NROFDOWN > 0 )); then
     echo "$NAME ($URL) | color=red href=$URL"
   done
   echo ---
+  echo "Refresh the test list | refresh=true"
   echo "Go to StatusCake | href=https://app.statuscake.com/YourStatus.php"
 fi
