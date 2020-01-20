@@ -30,6 +30,10 @@ for c in $(/usr/local/bin/brew cask list); do
   CASK_INFO=$(/usr/local/bin/brew cask info $c)
   CASK_NAME=$(echo "$c" | cut -d ":" -f1 | xargs)
   NEW_VERSION=$(echo "$CASK_INFO" | grep -e "$CASK_NAME: .*" | cut -d ":" -f2 | sed 's/ *//' | cut -d " " -f1)
+  if [ "$CASK_NAME" = 'java' ]; then
+    # dirty fix to handle weird java versions 11.0.2,9 as it's installed in a folder with just 11.0.2 and isn't recognised as an existing version
+    NEW_VERSION=$(echo $NEW_VERSION | sed 's/,.*//')
+  fi
   IS_CURRENT_VERSION_INSTALLED=$(echo "$CASK_INFO" | grep -q ".*/Caskroom/$CASK_NAME/$NEW_VERSION.*" 2>&1 && echo true )
 
   if [[ -z "$IS_CURRENT_VERSION_INSTALLED" ]]; then
@@ -62,6 +66,8 @@ if (( $UPDATE_COUNT > 0 )) || (( $UPDATE_CASK_COUNT > 0 )); then
     echo "---";
     echo "$UPDATES_CASK" | awk '{print $0 " | bash='$SCRIPT' param1=launch-iterm param2=\"/usr/local/bin/brew cask install --force\" param3="$1" terminal=false" }'
   fi
+  echo "---";
+  echo "Refresh below list | refresh=true"
 fi
 
 
