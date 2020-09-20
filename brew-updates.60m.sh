@@ -17,39 +17,41 @@ if [ "$1" = 'launch-iterm' ]; then
   exit
 fi
 
-/usr/local/bin/brew update > /dev/null || exit_with_error;
-SCRIPT=$0
+{
+  /usr/local/bin/brew update > /dev/null || exit_with_error;
+  SCRIPT=$0
 
-# brew
-UPDATES=$(/usr/local/bin/brew outdated --verbose);
-UPDATE_COUNT=$(echo "$UPDATES" | grep -c '[^[:space:]]');
+  # brew
+  UPDATES=$(/usr/local/bin/brew outdated --verbose);
+  UPDATE_COUNT=$(echo "$UPDATES" | grep -c '[^[:space:]]');
 
-# brew cask
-for c in $(/usr/local/bin/brew cask list); do
-  # brew cask info is slow but much more reliable then 'brew cask outdated'
-  CASK_INFO=$(/usr/local/bin/brew cask info $c)
-  CASK_NAME=$(echo "$c" | cut -d ":" -f1 | xargs)
-  NEW_VERSION=$(echo "$CASK_INFO" | grep -e "$CASK_NAME: .*" | cut -d ":" -f2 | sed 's/ *//' | cut -d " " -f1)
-  if [ "$CASK_NAME" = 'java' ]; then
-    # dirty fix to handle weird java versions 11.0.2,9 as it's installed in a folder with just 11.0.2 and isn't recognised as an existing version
-    NEW_VERSION=$(echo $NEW_VERSION | sed 's/,.*//')
-  fi
-  IS_CURRENT_VERSION_INSTALLED=$(echo "$CASK_INFO" | grep -q ".*/Caskroom/$CASK_NAME/$NEW_VERSION.*" 2>&1 && echo true )
-
-  if [[ -z "$IS_CURRENT_VERSION_INSTALLED" ]]; then
-    if [ -n "$UPDATES_CASK" ]; then
-      UPDATES_CASK="$UPDATES_CASK"$'\n'"$CASK_NAME ($NEW_VERSION)"
-    else
-      UPDATES_CASK="$CASK_NAME ($NEW_VERSION)"
+  # brew cask
+  for c in $(/usr/local/bin/brew list --cask); do
+    # brew cask info is slow but much more reliable then 'brew cask outdated'
+    CASK_INFO=$(/usr/local/bin/brew cask info $c)
+    CASK_NAME=$(echo "$c" | cut -d ":" -f1 | xargs)
+    NEW_VERSION=$(echo "$CASK_INFO" | grep -e "$CASK_NAME: .*" | cut -d ":" -f2 | sed 's/ *//' | cut -d " " -f1)
+    if [ "$CASK_NAME" = 'java' ]; then
+      # dirty fix to handle weird java versions 11.0.2,9 as it's installed in a folder with just 11.0.2 and isn't recognised as an existing version
+      NEW_VERSION=$(echo $NEW_VERSION | sed 's/,.*//')
     fi
-  fi
+    IS_CURRENT_VERSION_INSTALLED=$(echo "$CASK_INFO" | grep -q ".*/Caskroom/$CASK_NAME/$NEW_VERSION.*" 2>&1 && echo true )
 
-  CASK_INFO=""
-  NEW_VERSION=""
-  IS_CURRENT_VERSION_INSTALLED=""
-done
+    if [[ -z "$IS_CURRENT_VERSION_INSTALLED" ]]; then
+      if [ -n "$UPDATES_CASK" ]; then
+        UPDATES_CASK="$UPDATES_CASK"$'\n'"$CASK_NAME ($NEW_VERSION)"
+      else
+        UPDATES_CASK="$CASK_NAME ($NEW_VERSION)"
+      fi
+    fi
 
-UPDATE_CASK_COUNT=$(echo "$UPDATES_CASK" | grep -c '[^[:space:]]');
+    CASK_INFO=""
+    NEW_VERSION=""
+    IS_CURRENT_VERSION_INSTALLED=""
+  done
+
+  UPDATE_CASK_COUNT=$(echo "$UPDATES_CASK" | grep -c '[^[:space:]]');
+} &> /dev/null
 
 # and output
 if (( $UPDATE_COUNT > 0 )) || (( $UPDATE_CASK_COUNT > 0 )); then
