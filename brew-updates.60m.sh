@@ -28,7 +28,7 @@ fi
   # brew cask
   for c in $(/usr/local/bin/brew list --cask); do
     # brew cask info is slow but much more reliable then 'brew cask outdated'
-    CASK_INFO=$(/usr/local/bin/brew cask info $c)
+    CASK_INFO=$(/usr/local/bin/brew info --cask $c)
     CASK_NAME=$(echo "$c" | cut -d ":" -f1 | xargs)
     NEW_VERSION=$(echo "$CASK_INFO" | grep -e "$CASK_NAME: .*" | cut -d ":" -f2 | sed 's/ *//' | cut -d " " -f1)
     if [ "$CASK_NAME" = 'java' ]; then
@@ -66,7 +66,7 @@ if (( $UPDATE_COUNT > 0 )) || (( $UPDATE_CASK_COUNT > 0 )); then
     echo "---";
     echo "Upgrade all brew casks | bash='$SCRIPT' param1=launch-iterm param2=brew_cask_upgrade terminal=false"
     echo "---";
-    echo "$UPDATES_CASK" | awk '{print $0 " | bash='$SCRIPT' param1=launch-iterm param2=\"/usr/local/bin/brew cask install --force\" param3="$1" terminal=false" }'
+    echo "$UPDATES_CASK" | awk '{print $0 " | bash='$SCRIPT' param1=launch-iterm param2=\"/usr/local/bin/brew install --cask --force\" param3="$1" terminal=false" }'
   fi
   echo "---";
   echo "Refresh below list | refresh=true"
